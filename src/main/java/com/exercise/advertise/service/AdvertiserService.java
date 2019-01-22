@@ -47,6 +47,33 @@ public class AdvertiserService {
 		return response;
 	}
 
+	public ResponseEntity<String> create(Advertiser advertiser) {
+		ResponseEntity<String> response = null;
+		try {
+			advertiserRepository.insert(advertiser);
+			response = new ResponseEntity<String>(gson.toJson(commonUtils.successResponse()), HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = commonUtils.errorMessage();
+		}
+		return response;
+	}
 	
+	public ResponseEntity<String> deleteById(Integer id) {
+		ResponseEntity<String> response = null;
+		try {
+			int deleteAdvertiserById = advertiserRepository.deleteAdvertiserById(id);
+			if (deleteAdvertiserById == 1) {
+				response = new ResponseEntity<String>(gson.toJson(commonUtils.successResponse()), HttpStatus.OK);
+			} else {
+				response = commonUtils.userNotFound();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = commonUtils.errorMessage();
+		}
+		return response;
+	}
+
 
 }

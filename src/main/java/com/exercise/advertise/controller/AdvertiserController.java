@@ -30,4 +30,21 @@ public class AdvertiserController {
 		ResponseEntity<String> findById = advertiserService.findById(id);
 		return findById;
 	}
+	
+	
+	@ApiOperation(value = "Create Advertiser", httpMethod = "POST")
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> create(@RequestBody Advertiser advertiser) {
+		ResponseEntity<String> response = advertiserService.create(advertiser);
+		return response;
+	}
+	
+	
+	@ApiOperation(value = "Delete Advertiser", httpMethod = "DELETE")
+	@DeleteMapping(value="/{id}",produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id) {
+		ResponseEntity<String> deleteById = advertiserService.deleteById(id);
+		return deleteById;
+	}
+	
 }
