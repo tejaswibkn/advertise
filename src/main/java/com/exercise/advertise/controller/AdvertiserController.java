@@ -1,0 +1,33 @@
+package com.exercise.advertise.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.exercise.advertise.entity.Advertiser;
+import com.exercise.advertise.service.AdvertiserService;
+import com.wordnik.swagger.annotations.ApiOperation;
+
+@RestController()
+@RequestMapping(value="/advertiser")
+public class AdvertiserController {
+
+	@Autowired
+	AdvertiserService advertiserService;
+
+	
+	@ApiOperation(value = "Get Advertiser", httpMethod = "GET")
+	@GetMapping(value="/{id}",produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getAdvertiserById(@PathVariable("id") Integer id) {
+		ResponseEntity<String> findById = advertiserService.findById(id);
+		return findById;
+	}
+}
