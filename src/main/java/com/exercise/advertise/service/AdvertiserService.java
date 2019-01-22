@@ -76,4 +76,44 @@ public class AdvertiserService {
 	}
 
 
+	public ResponseEntity<String> update(Advertiser advertiser) {
+		ResponseEntity<String> response = null;
+		try {
+			int updateAdvertiser = advertiserRepository.updateAdvertiser(advertiser);
+			if (updateAdvertiser == 1) {
+				response = new ResponseEntity<String>(gson.toJson(commonUtils.successResponse()), HttpStatus.OK);
+			} else {
+				response = commonUtils.userNotFound();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = commonUtils.errorMessage();
+		}
+		return response;
+	}
+
+	public ResponseEntity<String> makeTransaction(Integer id) {
+		ResponseEntity<String> response = null;
+		try {
+			Advertiser advertiserById = advertiserRepository.getAdvertiserById(id);
+			boolean present = Optional.ofNullable(advertiserById).isPresent();
+			if (present) {
+				if (advertiserById.getAdvertiserCreditLimit() > minLimit) {
+					long remaingBal = advertiserById.getAdvertiserCreditLimit() - minLimit;
+					advertiserById.setAdvertiserCreditLimit(remaingBal);
+					advertiserRepository.updateAdvertiser(advertiserById);
+					response = new ResponseEntity<String>(gson.toJson(commonUtils.successResponse()), HttpStatus.OK);
+				} else {
+					ErrorResponse errorResponse = commonUtils.errorResponse(HttpStatus.BAD_REQUEST.toString(),
+							"Insufficent balance");
+					response = new ResponseEntity<>(gson.toJson(errorResponse), HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response = commonUtils.userNotFound();
+			}
+		} catch (Exception e) {
+			response = commonUtils.errorMessage();
+		}
+		return response;
+	}
 }

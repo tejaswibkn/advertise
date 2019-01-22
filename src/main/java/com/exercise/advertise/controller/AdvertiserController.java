@@ -47,4 +47,18 @@ public class AdvertiserController {
 		return deleteById;
 	}
 	
+	@ApiOperation(value = "Update Advertiser", httpMethod = "PUT")
+	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> update( @RequestBody Advertiser advertiser) {
+		ResponseEntity<String> response = advertiserService.update(advertiser);
+		return response;
+	}
+	
+	@ApiOperation(value = "To check that advertiser have enough credit for transaction", httpMethod = "GET")
+	@GetMapping(value="/avaliablebalance/{id}",produces= MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getAvaliableBalance(@PathVariable("id") Integer id) {
+		ResponseEntity<String> makeTransaction = advertiserService.makeTransaction(id);
+		return makeTransaction;
+	}
+	
 }

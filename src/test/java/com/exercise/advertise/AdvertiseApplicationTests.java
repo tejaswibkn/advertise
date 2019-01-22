@@ -36,9 +36,9 @@ public class AdvertiseApplicationTests {
 	
 	public void createAdvertiser() {
 		Advertiser advertiser = new Advertiser();
-		advertiser.setAdvertiserName("vinay");
+		advertiser.setAdvertiserName("tejas");
 		advertiser.setAdvertiserCreditLimit(100);
-		advertiser.setAdvertiserContactName("vinay r");
+		advertiser.setAdvertiserContactName("tejas r");
 		when(service.create(advertiser)).thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
 		ResponseEntity<String> create = service.create(advertiser);
 		assertEquals(create.getStatusCodeValue(), 201);
@@ -51,6 +51,13 @@ public class AdvertiseApplicationTests {
 		assertEquals(deleteById.getStatusCodeValue(), 200);
 	}
 	
-	
+	@Test
+	public void updateAdvertiser(){
+		Advertiser advertiser = new Advertiser();
+		advertiser.setAdvertiserName("tejas");
+		when(service.update(Mockito.any())).thenReturn(new ResponseEntity<>(gson.toJson(advertiser),HttpStatus.CREATED));
+		ResponseEntity<String> findById = service.update(advertiser);
+		assertEquals(gson.toJson(advertiser), findById.getBody());
+	}
 	
 }
